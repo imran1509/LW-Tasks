@@ -18,7 +18,7 @@ Then do the following
 - using neovim edit values.yaml of nginx chart in bitnami/ directory
 - update / save replicaCount to 2
 - helm install into your local k8s cluster
-- ubectl to check k8s output of 2 replicas running
+- kubectl to check k8s output of 2 replicas running
 
 Make notes on your process. Please try not to use GPT/LLM for this. Googling is fine.
 The journey is more important then the end result.
@@ -119,5 +119,44 @@ chmod 700 get_helm.sh
 - Run the script to install helm
 ```
 ./get_helm.sh
-``` 
-     
+```
+
+### Configure helm to connect with k3s cluster
+
+- Copy the K3s cluster configuration file to your local machine
+```
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+```
+
+- Set Kubernetes Context
+```
+kubectl config use-context default
+```
+## Step 3: Clone the Bitnami charts repo
+
+```
+git clone https://github.com/bitnami/charts.git
+```
+
+## Step 4: Change directory and go to charts/bitnami/nginx/
+
+```
+cd charts/bitnami/nginx/
+```
+
+## Step 5: Open values.yaml using neovim and edit the replicaCount value to 2
+
+```
+nvim Values.yaml
+```
+Search for replicaCount and change the value from 1 to 2 And save the file
+
+## Step 6: Fetch missing dependencies
+```
+helm dependency build
+```
+
+## Step 7: Install and deploy nginx cluster using helm
+```
+helm install my-nginx ./
+```
