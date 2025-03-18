@@ -27,5 +27,5 @@ The journey is more important then the end result.
 Connect to the VM using this command in your terminal
 
 ```
-
+ssh -i /Users/imran/LWSSHkey root@64.227.139.218
 ```
