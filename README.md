@@ -23,9 +23,86 @@ Then do the following
 Make notes on your process. Please try not to use GPT/LLM for this. Googling is fine.
 The journey is more important then the end result.
 
-## Step 1 SSH into VM
+## Step 1: SSH into VM
 Connect to the VM using this command in your terminal
 
 ```
 ssh -i /Users/imran/LWSSHkey root@64.227.139.218
 ```
+## Step 2: Install required tools/packages
+### Install k3s
+```
+curl -sfL https://get.k3s.io | sh -
+```
+Check for ready node and verify installation
+
+```
+sudo k3s kubectl get node
+```
+
+### Install neovim
+
+```
+sudo apt install neovim
+```
+
+### Install zsh
+
+```
+sudo apt install zsh
+```
+
+### Install git
+
+```
+sudo apt install git
+```
+
+### Install Kubectl
+
+- Download the latest release
+```
+ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+```
+
+- Install Kubectl
+```
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+
+- Check version and verify installation
+```
+kubectl version --client
+```
+
+### Install Terraform
+
+- Install unzip
+```
+sudo apt install unzip
+```
+- Confirm latest version from the terraform website "https://www.terraform.io/downloads.html"
+- Download the latest version of Terraform
+```
+wget https://releases.hashicorp.com/terraform/1.11.2/terraform_1.11.2_linux_amd64.zip
+```
+
+- Extract the downloaded file
+
+```
+unzip terraform_1.11.2_linux_amd64.zip
+```
+
+- Move the extracted file into /usr/local/bin
+```
+sudo mv terraform /usr/local/bin/
+```
+
+- Run Terraform
+
+```
+terraform --version 
+```
+
+
+     
