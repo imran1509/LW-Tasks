@@ -1,5 +1,5 @@
 # LW-First-Task
-64.227.139.218
+VM address = 64.227.139.218
 
 username: root
 
