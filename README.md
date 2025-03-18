@@ -104,5 +104,20 @@ sudo mv terraform /usr/local/bin/
 terraform --version 
 ```
 
+### Install Helm
 
+- fetch and download the Helm installer script
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+```
+
+- Give executable permission to the script
+```
+chmod 700 get_helm.sh
+```
+
+- Run the script to install helm
+```
+./get_helm.sh
+``` 
      
