@@ -147,7 +147,7 @@ cd charts/bitnami/nginx/
 ## Step 5: Open values.yaml using neovim and edit the replicaCount value to 2
 
 ```
-nvim Values.yaml
+nvim values.yaml
 ```
 Search for replicaCount and change the value from 1 to 2 And save the file
 
