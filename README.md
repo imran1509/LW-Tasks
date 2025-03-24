@@ -172,4 +172,25 @@ Introduce:
 - OpenTelemetry
 - Multi-tier test application which can be used to demonstrate it's tracing ability.
 
-Currently working on the second task
+## Step 1: Set up Tempo with Local Storage
+
+- create a Helm chart configuration values file for Tempo with local storage
+
+```
+# tempo-values.yaml
+tempo:
+  repository: grafana/tempo
+  tag: latest
+  pullPolicy: IfNotPresent
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /var/tempo/traces
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClassName: standard
+```
