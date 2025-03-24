@@ -194,3 +194,11 @@ persistence:
   size: 10Gi
   storageClassName: standard
 ```
+
+- Install Tempo using Helm
+
+```
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install tempo grafana/tempo -f tempo-values.yaml
+```
