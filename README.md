@@ -165,3 +165,11 @@ helm install my-nginx ./
 I checked the following log files `var/log/auth.log` , `var/log/syslog` with the help of `grep` and `tail` commands for the reason of error while connecting to the VM. I could see that ssh serves went down because of multiple failed attempts of authentication. Thats why I was not able to access the VM. And when you restarted the VM the server and port 22 opened again and thats when I was able to connect again.
 
 this is my finding. please let me know if there is anything else as well.
+
+# LW-Second-Task
+Introduce:
+- Grafana Tempo
+- OpenTelemetry
+- Multi-tier test application which can be used to demonstrate it's tracing ability.
+
+Currently working on the second task
