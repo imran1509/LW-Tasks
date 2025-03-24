@@ -320,3 +320,15 @@ spec:
 ```
 kubectl apply -f otel-collector.yaml
 ```
+
+## Error faced after this step
+
+otel-collector pod was in CrashBackLoopOff state and was not runnning.
+
+## Finding the Issue that was causing the error
+I checked the logs of the deployment
+
+```
+kubectl logs deploy/otel-collector
+```
+
