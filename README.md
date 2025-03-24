@@ -202,3 +202,121 @@ helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 helm install tempo grafana/tempo -f tempo-values.yaml
 ```
+
+## Step 2: Deploy OpenTelemetry Collector
+
+- Create an OpenTelemetry Collector configuration `otel-collector.yaml`:
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-conf
+  namespace: default
+data:
+  otel-collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    processors:
+      batch:
+        timeout: 1s
+        send_batch_size: 1024
+
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 1000
+        spike_limit_mib: 200
+
+      k8sattributes:
+        auth_type: "serviceAccount"
+        passthrough: false
+        extract:
+          metadata:
+            - k8s.pod.name
+            - k8s.pod.uid
+            - k8s.deployment.name
+            - k8s.namespace.name
+            - k8s.node.name
+          annotations:
+            - key: app
+              from: pod
+          labels:
+            - key: app.kubernetes.io/name
+              from: pod
+
+    exporters:
+      otlp:
+        endpoint: "tempo.monitoring.svc.cluster.local:4317"
+        tls:
+          insecure: true
+      
+      logging:
+        loglevel: debug
+        sampling_initial: 5
+        sampling_thereafter: 200
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, batch]
+          exporters: [otlp, logging]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+      - name: collector
+        image: otel/opentelemetry-collector-contrib:latest
+        args:
+        - "--config=/conf/otel-collector-config.yaml"
+        ports:
+        - containerPort: 4317 # OTLP gRPC
+        - containerPort: 4318 # OTLP HTTP
+        volumeMounts:
+        - name: otel-collector-config-vol
+          mountPath: /conf
+      volumes:
+        - name: otel-collector-config-vol
+          configMap:
+            name: otel-collector-conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  namespace: default
+spec:
+  ports:
+  - name: otlp-grpc
+    port: 4317
+    targetPort: 4317
+  - name: otlp-http
+    port: 4318
+    targetPort: 4318
+  selector:
+    app: otel-collector
+```
+
+- Apply and deploy the configuration
+
+```
+kubectl apply -f otel-collector.yaml
+```
