@@ -396,7 +396,7 @@ data:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, k8sattributes, batch]
-          exporters: [otlp, logging]
+          exporters: [otlp, debug]
 ---
 apiVersion: apps/v1
 kind: Deployment
