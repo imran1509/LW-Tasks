@@ -1,9 +1,10 @@
-# LW-First-Task
-VM address = 64.227.139.218
+# 📝 1. SSH into VM and do the task mentioned below
 
-username: root
+This is your VM address = 64.227.139.218
 
-- Please SSH into the VM and install
+This is your username: root
+
+1. Please SSH into the VM and install
    - A local Kubernetes cluster using https://k3s.io/
    - neovim
    - zsh
@@ -12,16 +13,13 @@ username: root
    - terraform
    - helm
 
-Then do the following
+2. Then do the following
 
 - using git transfer the following repo to your VM https://github.com/bitnami/charts.git
 - using neovim edit values.yaml of nginx chart in bitnami/ directory
 - update / save replicaCount to 2
 - helm install into your local k8s cluster
 - kubectl to check k8s output of 2 replicas running
-
-Make notes on your process. Please try not to use GPT/LLM for this. Googling is fine.
-The journey is more important then the end result.
 
 ## Step 1: SSH into VM
 Connect to the VM using this command in your terminal
@@ -166,11 +164,12 @@ I checked the following log files `var/log/auth.log` , `var/log/syslog` with the
 
 this is my finding. please let me know if there is anything else as well.
 
-# LW-Second-Task
-Introduce:
+# 📝 2. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
+In this task we have to Introduce:
 - Grafana Tempo
 - OpenTelemetry
-- Multi-tier test application which can be used to demonstrate it's tracing ability.
+  
+And install a  Multi-tier test application which can be used to demonstrate it's tracing ability.
 
 ## Step 1: Set up Tempo with Local Storage
 
@@ -458,4 +457,11 @@ Delete the pod to restart the pod with the new configuration
 ```
 kubectl delete pod -l app=otel-collector
 ```
+
+## :bulb: Interesting and new things I learned until these step.
+I got to learn about:
+- Traces
+- Span
+- Difference between **Traces** , **Metrics** and **Logs**
+- These 3 are known as 3 pillars of observability
 
