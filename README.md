@@ -321,7 +321,7 @@ spec:
 kubectl apply -f otel-collector.yaml
 ```
 
-## Error faced after this step
+## Error faced after deploying OpenTelemetry Collector
 
 otel-collector pod was in CrashBackLoopOff state and was not runnning.
 
@@ -330,5 +330,132 @@ I checked the logs of the deployment
 
 ```
 kubectl logs deploy/otel-collector
+```
+
+## Issue Found
+The Issue was in the Configuration file. One of the exporters used `logging` was deprecated. Thats why pod was crashing and not runnning.
+
+## Solution
+We have to use `debug` exporter instead of `logging` exporter in the configuration file.
+
+The corrected file
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-conf
+  namespace: default
+data:
+  otel-collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    processors:
+      batch:
+        timeout: 1s
+        send_batch_size: 1024
+
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 1000
+        spike_limit_mib: 200
+
+      k8sattributes:
+        auth_type: "serviceAccount"
+        passthrough: false
+        extract:
+          metadata:
+            - k8s.pod.name
+            - k8s.pod.uid
+            - k8s.deployment.name
+            - k8s.namespace.name
+            - k8s.node.name
+          annotations:
+            - key: app
+              from: pod
+          labels:
+            - key: app.kubernetes.io/name
+              from: pod
+
+    exporters:
+      otlp:
+        endpoint: "tempo.monitoring.svc.cluster.local:4317"
+        tls:
+          insecure: true
+      
+      debug:
+        verbosity: detailed
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, k8sattributes, batch]
+          exporters: [otlp, logging]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+      - name: collector
+        image: otel/opentelemetry-collector-contrib:latest
+        args:
+        - "--config=/conf/otel-collector-config.yaml"
+        ports:
+        - containerPort: 4317 # OTLP gRPC
+        - containerPort: 4318 # OTLP HTTP
+        volumeMounts:
+        - name: otel-collector-config-vol
+          mountPath: /conf
+      volumes:
+        - name: otel-collector-config-vol
+          configMap:
+            name: otel-collector-conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  namespace: default
+spec:
+  ports:
+  - name: otlp-grpc
+    port: 4317
+    targetPort: 4317
+  - name: otlp-http
+    port: 4318
+    targetPort: 4318
+  selector:
+    app: otel-collector
+
+```
+
+Apply the updated otel-collector.yaml file again to update the configmap of otel-collector
+
+```
+kubectl apply -f otel-collector.yaml
+```
+
+Delete the pod to restart the pod with the new configuration
+
+```
+kubectl delete pod -l app=otel-collector
 ```
 
