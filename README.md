@@ -321,21 +321,21 @@ spec:
 kubectl apply -f otel-collector.yaml
 ```
 
-## Error faced after deploying OpenTelemetry Collector
+## :x: Error faced after deploying OpenTelemetry Collector
 
 otel-collector pod was in CrashBackLoopOff state and was not runnning.
 
-## Finding the Issue that was causing the error
+## :warning: Finding the Issue that was causing the error
 I checked the logs of the deployment
 
 ```
 kubectl logs deploy/otel-collector
 ```
 
-## Issue Found
+## :bangbang: Issue Found
 The Issue was in the Configuration file. One of the exporters used `logging` was deprecated. Thats why pod was crashing and not runnning.
 
-## Solution
+## :white_check_mark: Solution
 We have to use `debug` exporter instead of `logging` exporter in the configuration file.
 
 The corrected file
