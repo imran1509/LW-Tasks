@@ -164,7 +164,7 @@ I checked the following log files `var/log/auth.log` , `var/log/syslog` with the
 
 this is my finding. please let me know if there is anything else as well.
 
-# 📝 2. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
+# 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
 In this task we have to Introduce:
 - Grafana Tempo
 - OpenTelemetry
