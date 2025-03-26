@@ -11,3 +11,4 @@ In my first, I SSH'd into a VM and set up a local Kubernetes cluster using K3s. 
 Following this, the next day, I received an invitation to Tailscale from David. He provided me with a new VM address and credentials, requesting me to repeat the same task on the new VM.
 
 After setting up the Kubernetes cluster, for my next task David instructed me to select an open-source observability stack, deploy it, and provide details on the chosen stack along with the reasoning behind my selection.
+
