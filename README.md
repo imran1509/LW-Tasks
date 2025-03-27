@@ -195,7 +195,42 @@ helm install prometheus prometheus-community/prometheus
 kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
 ```
 
-## Step 3: 
+## Step 3: Install Grafana using Helm
+
+- Add and update Grafana Helm repository and get the Grafana Helm chart.
+
+```
+helm repo add grafana https://grafana.github.io/helm-charts 
+helm repo update
+```
+
+- Install Grafana
+
+```
+helm install grafana grafana/grafana
+```
+
+## Step 4: Exposing the Grafana service on Kubernetes
+
+- To access the Grafana server application on our browser we have to expose the service.
+
+- To expose the service run this command
+
+```
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+```
+
+## Step 5: Access Grafana on browser and login
+- Default username will be `admin` and to get the password run the following command
+
+```
+kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+- Login to Grafana and add Prometheus as data source
+
+- Then go to Dashboards and import a Kubernetes prometheus dashboard to visualize all the metrics from Prometheus into a Grafana dashboard. 
+
 # 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
 In this task we have to Introduce:
 - Grafana Tempo
