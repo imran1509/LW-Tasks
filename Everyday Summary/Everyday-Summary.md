@@ -15,3 +15,4 @@ After setting up the Kubernetes cluster, for my next task David instructed me to
 I selected Prometheus and Grafana as my observability stack and deployed them to collect metrics and visualize them through a Grafana dashboard.
 
 I chose this solution because it is lightweight, scalable, and well-integrated with Kubernetes. Prometheus efficiently gathers and stores real-time metrics while offering built-in alerting via Alertmanager. Grafana enables intuitive visualization with customizable dashboards and supports multiple data sources. This combination is ideal for monitoring Kubernetes clusters, diagnosing issues, and setting up alerts, all while maintaining cost efficiency.
+
