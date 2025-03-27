@@ -23,3 +23,5 @@ I installed Grafana Tempo with local storage as object storage and OpenTelemetry
 I faced an error after OpenTelemetry collector was deployed. otel-collector pod was in CrashBackLoopOff state and was not runnning. I checked the logs of the deployment. The Issue was in the Configuration file. One of the exporters used logging was deprecated. Thats why pod was crashing and not runnning. We have to use `debug` exporter instead of `logging` exporter in the configuration file. To resolve this, I updated the configuration to use the debug exporter instead of logging, restarted the pod, and successfully restored its functionality.
 
 
+## :date: 27 March
+
