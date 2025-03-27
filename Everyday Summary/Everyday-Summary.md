@@ -1,8 +1,8 @@
 # Everyday Summary
 
-As per Callum's suggestion, I will be documenting my daily summaries here moving forward. Additionally, I will provide brief combined summary for the past days. Starting from today, March 26th, I will structure my summaries to include what I attempted, what I achieved, the challenges I encountered, and how I worked to overcome them and find solutions.
+As per Callum's suggestion, I will be documenting my daily summaries here moving forward. Additionally, I will provide brief combined summary for the past days. Starting from today, March 27th, I will structure my summaries to include what I attempted, what I achieved, the challenges I encountered, and how I worked to overcome them and find solutions.
 
-## :date: 17 March - 25 March
+## :date: 17 March - 26 March
 
 I joined LiveWyer's slack on 17th March and got my first task on 18th March
 
@@ -17,3 +17,5 @@ I selected Prometheus and Grafana as my observability stack and deployed them to
 I chose this solution because it is lightweight, scalable, and well-integrated with Kubernetes. Prometheus efficiently gathers and stores real-time metrics while offering built-in alerting via Alertmanager. Grafana enables intuitive visualization with customizable dashboards and supports multiple data sources. This combination is ideal for monitoring Kubernetes clusters, diagnosing issues, and setting up alerts, all while maintaining cost efficiency.
 
 Following this, David assigned me the next task, which involved enhancing the observability stack by introducing Grafana Tempo and OpenTelemetry. Additionally, I was required to deploy a multi-tier test application to demonstrate its tracing capabilities.
+
+
