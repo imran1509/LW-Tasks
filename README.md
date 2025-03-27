@@ -1,3 +1,7 @@
+<p align="center">
+   <h1 align="center">LW-Tasks</h1>
+</p>
+
 ## 📝 1. SSH into VM and do the task mentioned below
 
 This is your VM address = 64.227.139.218
@@ -159,6 +163,8 @@ helm dependency build
 helm install my-nginx ./
 ```
 
+---
+
 ## 📝 2. choose an opensource observability stack and deploy it
 
 ### :x: Getting error while connecting to the VM
@@ -230,6 +236,8 @@ kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-p
 - Login to Grafana and add Prometheus as data source
 
 - Then go to Dashboards and import a Kubernetes prometheus dashboard to visualize all the metrics from Prometheus into a Grafana dashboard. 
+
+---
 
 ## 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
 In this task we have to Introduce:
