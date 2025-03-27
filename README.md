@@ -1,4 +1,4 @@
-# 📝 1. SSH into VM and do the task mentioned below
+## 📝 1. SSH into VM and do the task mentioned below
 
 This is your VM address = 64.227.139.218
 
@@ -21,14 +21,14 @@ This is your username: root
 - helm install into your local k8s cluster
 - kubectl to check k8s output of 2 replicas running
 
-## Step 1: SSH into VM
+### Step 1: SSH into VM
 Connect to the VM using this command in your terminal
 
 ```
 ssh -i /Users/imran/LWSSHkey root@64.227.139.218
 ```
-## Step 2: Install required tools/packages
-### Install k3s
+### Step 2: Install required tools/packages
+#### Install k3s
 ```
 curl -sfL https://get.k3s.io | sh -
 ```
@@ -38,25 +38,25 @@ Check for ready node and verify installation
 sudo k3s kubectl get node
 ```
 
-### Install neovim
+#### Install neovim
 
 ```
 sudo apt install neovim
 ```
 
-### Install zsh
+#### Install zsh
 
 ```
 sudo apt install zsh
 ```
 
-### Install git
+#### Install git
 
 ```
 sudo apt install git
 ```
 
-### Install Kubectl
+#### Install Kubectl
 
 - Download the latest release
 ```
@@ -73,7 +73,7 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 ```
 
-### Install Terraform
+#### Install Terraform
 
 - Install unzip
 ```
@@ -102,7 +102,7 @@ sudo mv terraform /usr/local/bin/
 terraform --version 
 ```
 
-### Install Helm
+#### Install Helm
 
 - fetch and download the Helm installer script
 ```
@@ -119,7 +119,7 @@ chmod 700 get_helm.sh
 ./get_helm.sh
 ```
 
-### Configure helm to connect with k3s cluster
+#### Configure helm to connect with k3s cluster
 
 - Copy the K3s cluster configuration file to your local machine
 ```
@@ -130,38 +130,38 @@ sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 ```
 kubectl config use-context default
 ```
-## Step 3: Clone the Bitnami charts repo
+### Step 3: Clone the Bitnami charts repo
 
 ```
 git clone https://github.com/bitnami/charts.git
 ```
 
-## Step 4: Change directory and go to charts/bitnami/nginx/
+### Step 4: Change directory and go to charts/bitnami/nginx/
 
 ```
 cd charts/bitnami/nginx/
 ```
 
-## Step 5: Open values.yaml using neovim and edit the replicaCount value to 2
+### Step 5: Open values.yaml using neovim and edit the replicaCount value to 2
 
 ```
 nvim values.yaml
 ```
 Search for replicaCount and change the value from 1 to 2 And save the file
 
-## Step 6: Fetch missing dependencies
+### Step 6: Fetch missing dependencies
 ```
 helm dependency build
 ```
 
-## Step 7: Install and deploy nginx cluster using helm
+### Step 7: Install and deploy nginx cluster using helm
 ```
 helm install my-nginx ./
 ```
 
-# 📝 2. choose an opensource observability stack and deploy it
+## 📝 2. choose an opensource observability stack and deploy it
 
-## :x: Getting error while connecting to the VM
+### :x: Getting error while connecting to the VM
 
 After completing the first task, David shared the credentials for another VM and asked to perform the first task again there. But I was not able to SSH into it. And then Walter and Anthony checked the VM to troubleshoot the issue. Then me, Walter and Anthony tried to find the issue on call.
 
@@ -186,7 +186,7 @@ helm repo update
 helm install prometheus prometheus-community/prometheus
 ```
 
-## Step 2: Exposing the Prometheus-server service on Kubernetes
+### Step 2: Exposing the Prometheus-server service on Kubernetes
 - To access the Promethues server application on our browser we have to expose the service.
 
 - To expose the service run this command
@@ -195,7 +195,7 @@ helm install prometheus prometheus-community/prometheus
 kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
 ```
 
-## Step 3: Install Grafana using Helm
+### Step 3: Install Grafana using Helm
 
 - Add and update Grafana Helm repository and get the Grafana Helm chart.
 
@@ -210,7 +210,7 @@ helm repo update
 helm install grafana grafana/grafana
 ```
 
-## Step 4: Exposing the Grafana service on Kubernetes
+### Step 4: Exposing the Grafana service on Kubernetes
 
 - To access the Grafana server application on our browser we have to expose the service.
 
@@ -220,7 +220,7 @@ helm install grafana grafana/grafana
 kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
 ```
 
-## Step 5: Access Grafana on browser and login
+### Step 5: Access Grafana on browser and login
 - Default username will be `admin` and to get the password run the following command
 
 ```
@@ -231,14 +231,14 @@ kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-p
 
 - Then go to Dashboards and import a Kubernetes prometheus dashboard to visualize all the metrics from Prometheus into a Grafana dashboard. 
 
-# 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
+## 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
 In this task we have to Introduce:
 - Grafana Tempo
 - OpenTelemetry
   
 And install a  Multi-tier test application which can be used to demonstrate it's tracing ability.
 
-## Step 1: Set up Tempo with Local Storage
+### Step 1: Set up Tempo with Local Storage
 
 - create a Helm chart configuration values file for Tempo with local storage
 
@@ -269,7 +269,7 @@ helm repo update
 helm install tempo grafana/tempo -f tempo-values.yaml
 ```
 
-## Step 2: Deploy OpenTelemetry Collector
+### Step 2: Deploy OpenTelemetry Collector
 
 - Create an OpenTelemetry Collector configuration `otel-collector.yaml`:
 
@@ -387,21 +387,21 @@ spec:
 kubectl apply -f otel-collector.yaml
 ```
 
-## :x: Error faced after deploying OpenTelemetry Collector
+### :x: Error faced after deploying OpenTelemetry Collector
 
 otel-collector pod was in CrashBackLoopOff state and was not runnning.
 
-## :warning: Finding the Issue that was causing the error
+### :warning: Finding the Issue that was causing the error
 I checked the logs of the deployment
 
 ```
 kubectl logs deploy/otel-collector
 ```
 
-## :bangbang: Issue Found
+### :bangbang: Issue Found
 The Issue was in the Configuration file. One of the exporters used `logging` was deprecated. Thats why pod was crashing and not runnning.
 
-## :white_check_mark: Solution
+### :white_check_mark: Solution
 We have to use `debug` exporter instead of `logging` exporter in the configuration file.
 
 The corrected file
@@ -525,7 +525,7 @@ Delete the pod to restart the pod with the new configuration
 kubectl delete pod -l app=otel-collector
 ```
 
-## :bulb: Interesting and new things I learned until these step.
+### :bulb: Interesting and new things I learned until these step.
 I got to learn about:
 - Traces
 - Span
