@@ -18,4 +18,8 @@ I chose this solution because it is lightweight, scalable, and well-integrated w
 
 Following this, David assigned me the next task, which involved enhancing the observability stack by introducing Grafana Tempo and OpenTelemetry. Additionally, I was required to deploy a multi-tier test application to demonstrate its tracing capabilities.
 
+I installed Grafana Tempo with local storage as object storage and OpenTelemetry collector using helm. 
+
+I faced an error after OpenTelemetry collector was deployed. otel-collector pod was in CrashBackLoopOff state and was not runnning. I checked the logs of the deployment. The Issue was in the Configuration file. One of the exporters used logging was deprecated. Thats why pod was crashing and not runnning. We have to use `debug` exporter instead of `logging` exporter in the configuration file. To resolve this, I updated the configuration to use the debug exporter instead of logging, restarted the pod, and successfully restored its functionality.
+
 
