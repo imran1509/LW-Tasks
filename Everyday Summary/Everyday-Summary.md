@@ -6,7 +6,7 @@ As per Callum's suggestion, I will be documenting my daily summaries here moving
 
 I joined LiveWyer's slack on 17th March and got my first task on 18th March
 
-In my first, I SSH'd into a VM and set up a local Kubernetes cluster using K3s. I installed essential tools, including Neovim, Zsh, Git, Kubectl, Terraform, and Helm. I then cloned the Bitnami charts repository via Git, edited the values.yaml file of the Nginx chart using Neovim to set replicaCount to 2, and deployed it to the local Kubernetes cluster using Helm. Finally, I verified the deployment using Kubectl to ensure two replicas were running successfully. 
+In my first task, I SSH'd into a VM and set up a local Kubernetes cluster using K3s. I installed essential tools, including Neovim, Zsh, Git, Kubectl, Terraform, and Helm. I then cloned the Bitnami charts repository via Git, edited the values.yaml file of the Nginx chart using Neovim to set replicaCount to 2, and deployed it to the local Kubernetes cluster using Helm. Finally, I verified the deployment using Kubectl to ensure two replicas were running successfully. 
 
 Following this, the next day, I received an invitation to Tailscale from David. He provided me with a new VM address and credentials, requesting me to repeat the same task on the new VM.
 
@@ -16,3 +16,4 @@ I selected Prometheus and Grafana as my observability stack and deployed them to
 
 I chose this solution because it is lightweight, scalable, and well-integrated with Kubernetes. Prometheus efficiently gathers and stores real-time metrics while offering built-in alerting via Alertmanager. Grafana enables intuitive visualization with customizable dashboards and supports multiple data sources. This combination is ideal for monitoring Kubernetes clusters, diagnosing issues, and setting up alerts, all while maintaining cost efficiency.
 
+Following this, David assigned me the next task, which involved enhancing the observability stack by introducing Grafana Tempo and OpenTelemetry. Additionally, I was required to deploy a multi-tier test application to demonstrate its tracing capabilities.
