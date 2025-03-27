@@ -177,7 +177,7 @@ And i took whole day. In the end we found out that the policies applied by Walte
 
 this is my finding. please let me know if there is anything else as well.
 
-## Step 1: Install Prometheus using Helm
+### Step 1: Install Prometheus using Helm
 
 - Add and update Prometheus Helm repository and get the Prometheus Helm chart.
 
