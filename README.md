@@ -159,11 +159,43 @@ helm dependency build
 helm install my-nginx ./
 ```
 
-## Error for not connecting to the VM
+# 📝 2. choose an opensource observability stack and deploy it
+
+## :x: Getting error while connecting to the VM
+
+After completing the first task, David shared the credentials for another VM and asked to perform the first task again there. But I was not able to SSH into it. And then Walter and Anthony checked the VM to troubleshoot the issue. Then me, Walter and Anthony tried to find the issue on call.
+
 I checked the following log files `var/log/auth.log` , `var/log/syslog` with the help of `grep` and `tail` commands for the reason of error while connecting to the VM. I could see that ssh serves went down because of multiple failed attempts of authentication. Thats why I was not able to access the VM. And when you restarted the VM the server and port 22 opened again and thats when I was able to connect again.
+
+And i took whole day. In the end we found out that the policies applied by Walter took some time to be efective and then I was able to access the VM.
 
 this is my finding. please let me know if there is anything else as well.
 
+## Step 1: Install Prometheus using Helm
+
+- Add and update Prometheus Helm repository and get the Prometheus Helm chart.
+
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+```
+
+- Install Prometheus
+
+```
+helm install prometheus prometheus-community/prometheus
+```
+
+## Step 2: Exposing the Prometheus-server service on Kubernetes
+- To access the Promethues server application on our browser we have to expose the service.
+
+- To expose the service run this command
+
+```
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+```
+
+## Step 3: 
 # 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
 In this task we have to Introduce:
 - Grafana Tempo
