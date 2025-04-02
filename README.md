@@ -239,7 +239,7 @@ kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-p
 
 ---
 
-## 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application 
+## 📝 3. Introduce Grafana Tempo and OpenTelemetry and use it with a test application
 In this task we will implement grafana tempo with local as object storage and open telemetry with auto-instrumentation using open telemetry operator for Google Cloud's Online Boutique microservices demo application running on Kubernetes. This will provide you with distributed tracing capabilities across the entire application.
 
 ### Prerequisites
@@ -249,7 +249,14 @@ In this task we will implement grafana tempo with local as object storage and op
 - Helm installed
 - Git to clone the Online Boutique repository
 
-### Step 1: Set up Tempo with Local Storage
+### Step 1: Clone the Online Boutique Repository
+
+```
+git clone https://github.com/GoogleCloudPlatform/microservices-demo.git
+cd microservices-demo
+```
+
+### Step 2: Set up Tempo with Local Storage
 
 - create a Helm chart configuration values file for Tempo with local storage
 
