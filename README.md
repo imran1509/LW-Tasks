@@ -256,9 +256,46 @@ git clone https://github.com/GoogleCloudPlatform/microservices-demo.git
 cd microservices-demo
 ```
 
-### Step 2: Set up Tempo with Local Storage
+### Step 2: Install Grafana Tempo with Local Storage
 
-- create a Helm chart configuration values file for Tempo with local storage
+- First, let's create a namespace for our observability stack:
+
+```
+kubectl create namespace observability
+```
+
+- Create a configuration values file for Tempo named tempo-values.yaml
+
+```
+tempo:
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo/traces
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+persistence:
+  enabled: true
+  size: 10Gi
+```
+
+- Now use Helm with the values file to install Grafana Tempo
+
+```
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install tempo grafana/tempo -n observability -f tempo-values.yaml
+```
+
+### Step 3: Install OpenTelemetry Operator
+
+
 
 
 ### :bulb: Interesting and new things I learned until these step.
