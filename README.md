@@ -295,6 +295,59 @@ helm install tempo grafana/tempo -n observability -f tempo-values.yaml
 
 ### Step 3: Install OpenTelemetry Operator
 
+- Install the OpenTelemetry Operator to manage OpenTelemetry resources
+
+```
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+```
+
+### Step 4: Configure OpenTelemetry Collector
+
+- Create an OpenTelemetry Collector configuration file
+
+```
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-collector
+  namespace: observability
+spec:
+  mode: deployment
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    processors:
+      batch:
+        timeout: 5s
+        send_batch_size: 1000
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 1000
+        spike_limit_mib: 200
+
+    exporters:
+      otlp:
+        endpoint: tempo:4317
+        tls:
+          insecure: true
+
+      debug:
+        verbosity: detailed
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [memory_limiter, batch]
+          exporters: [otlp, debug]
+```
+
 
 
 
