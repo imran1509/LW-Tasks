@@ -348,6 +348,11 @@ spec:
           exporters: [otlp, debug]
 ```
 
+- Apply this configuration
+
+```
+kubectl apply -f otel-collector-config.yaml
+```
 
 
 
