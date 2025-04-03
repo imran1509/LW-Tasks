@@ -354,6 +354,36 @@ spec:
 kubectl apply -f otel-collector-config.yaml
 ```
 
+### Step 5: Configure Auto-Instrumentation for Java Services
+
+- Create an instrumentation resource `java-instrumentation for Java services
+
+```
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: java-instrumentation
+  namespace: default
+spec:
+  exporter:
+    endpoint: http://otel-collector-collector.observability.svc.cluster.local:4318
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
+  sampler:
+    type: parentbased_traceidratio
+    argument: "1.0"
+  java:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:latest
+```
+
+- Apply this configuration
+
+```
+kubectl apply -f java-instrumentation.yaml
+```
+
 
 
 ### :bulb: Interesting and new things I learned until these step.
