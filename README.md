@@ -384,6 +384,49 @@ spec:
 kubectl apply -f java-instrumentation.yaml
 ```
 
+### Step 6: Configure Auto-Instrumentation for Go and Python Services
+
+- Create instrumentation resources for Go and Python services: `go-instrumentation` and `python-instrumentation`
+
+```
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: go-instrumentation
+  namespace: default
+spec:
+  exporter:
+    endpoint: http://otel-collector-collector.observability.svc.cluster.local:4318
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
+  sampler:
+    type: parentbased_traceidratio
+    argument: "1.0"
+  go:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-go:latest
+```
+
+```
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: python-instrumentation
+  namespace: default
+spec:
+  exporter:
+    endpoint: http://otel-collector-collector.observability.svc.cluster.local:4318
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
+  sampler:
+    type: parentbased_traceidratio
+    argument: "1.0"
+  python:
+    image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python:latest
+```
 
 
 ### :bulb: Interesting and new things I learned until these step.
