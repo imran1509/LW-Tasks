@@ -443,13 +443,13 @@ For each service in the Online Boutique application, we'll need to edit the orig
 - Go Services: `productcatalogue`, `frontend`, `checkoutservice`, `shippingservice`
 - Python Services: `emailservice`, `recommendationservice`
 
-1. Java Services
+#### 1. Java Services
 For each Java service, manually edit the file to add the following:
 
 #### For example: `currencyservice.yaml`
 
-- Find the `template`: section under the Deployment
-- Immediately after `template`:, add:
+- Find the `template:` section under the Deployment
+- Immediately after `template:`, add:
 
 ```
 metadata:
@@ -461,7 +461,8 @@ metadata:
 
 `Metadata` section will be already there, we just need to add the `annotations` section.
 
-- Add to the `env`: section (create it if it doesn't exist):
+- Find the `containers:` section for the main container
+- Add to the `env:` section (create it if it doesn't exist):
 
 ```
 - name: OTEL_SERVICE_NAME
@@ -471,8 +472,60 @@ metadata:
 - name: OTEL_EXPORTER_OTLP_ENDPOINT
   value: "otel-collector-collector.observability.svc.cluster.local:4317"
 ```
-3. Go Services
-4. Python Services
+
+- Similarly modify other Java service manifest's files.
+
+#### 2. Go Services
+For Go services, there are is additional annotations that is required:
+
+#### For example: `frontend.yaml`
+
+- Find the `template:` section
+- Add after the existing metadata and labels:
+
+```
+annotations:
+    instrumentation.opentelemetry.io/inject-go: "go-instrumentation"
+    instrumentation.opentelemetry.io/otel-go-auto-target-exe: "/src/server"
+```
+
+- Add to the `env:` section:
+
+```
+- name: OTEL_SERVICE_NAME
+  value: "frontend"
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: "service.namespace=default,service.name=frontend"
+- name: OTEL_EXPORTER_OTLP_ENDPOINT
+  value: "otel-collector-collector.observability.svc.cluster.local:4317"
+```
+
+- Similarly modify other Go service manifest's files.
+
+#### 3. Python Services
+
+For the Python service:
+
+#### For example `recommendationservice` 
+
+- Find the `template:` section
+- Add after the existing metadata and labels:
+
+```
+annotations:
+    instrumentation.opentelemetry.io/inject-python: "python-instrumentation"
+```
+
+- Add to the `env:` section:
+
+```
+- name: OTEL_SERVICE_NAME
+  value: "recommendationservice"
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: "service.namespace=default,service.name=recommendationservice"
+- name: OTEL_EXPORTER_OTLP_ENDPOINT
+  value: "otel-collector-collector.observability.svc.cluster.local:4317"
+```
 
 ### :bulb: Interesting and new things I learned until these step.
 I got to learn about:
