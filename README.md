@@ -428,6 +428,51 @@ spec:
     image: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-python:latest
 ```
 
+- Apply these configurations
+
+```
+kubectl apply -f go-instrumentation.yaml
+kubectl apply -f python-instrumentation.yaml
+```
+
+### Step 7: Add instrumentaton annotations to all of the service's manifests
+
+For each service in the Online Boutique application, we'll need to edit the original manifest files in the `kubernetes-manifests` directory.
+
+- Java Services: `currencyservice`, `paymentservice`
+- Go Services: `productcatalogue`, `frontend`, `checkoutservice`, `shippingservice`
+- Python Services: `emailservice`, `recommendationservice`
+
+1. Java Services
+For each Java service, manually edit the file to add the following:
+
+#### For example: `currencyservice.yaml`
+
+- Find the `template`: section under the Deployment
+- Immediately after `template`:, add:
+
+```
+metadata:
+    labels:
+      app: currencyservice
+    annotations:
+      instrumentation.opentelemetry.io/inject-java: "java-instrumentation"
+```
+
+`Metadata` section will be already there, we just need to add the `annotations` section.
+
+- Add to the `env`: section (create it if it doesn't exist):
+
+```
+- name: OTEL_SERVICE_NAME
+  value: "currencyservice"
+- name: OTEL_RESOURCE_ATTRIBUTES
+  value: "service.namespace=default,service.name=currencyservice"
+- name: OTEL_EXPORTER_OTLP_ENDPOINT
+  value: "otel-collector-collector.observability.svc.cluster.local:4317"
+```
+3. Go Services
+4. Python Services
 
 ### :bulb: Interesting and new things I learned until these step.
 I got to learn about:
