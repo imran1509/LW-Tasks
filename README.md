@@ -535,6 +535,42 @@ annotations:
 kubectl apply -f kubernetes-manifests/
 ```
 
+### Step 9: Install grafana for visualization
+
+- Add and update Grafana Helm repository and get the Grafana Helm chart.
+
+```
+helm repo add grafana https://grafana.github.io/helm-charts 
+helm repo update
+```
+
+- Install Grafana
+
+```
+helm install grafana grafana/grafana -n observability
+```
+
+- To access the Grafana server application on our browser we have to expose the service.
+
+- To expose the service run this command
+
+```
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+```
+
+- Access Grafana on browser and login
+- Default username will be `admin` and to get the password run the following command
+
+```
+kubectl get secret --namespace observability grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+- Login to Grafana and add Tempo as data source
+
+- Then go to Explore and see the traces by service name. 
+
+---
+
 ### :bulb: Interesting and new things I learned until these step.
 I got to learn about:
 - Traces
