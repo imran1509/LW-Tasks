@@ -562,7 +562,7 @@ kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana
 - Default username will be `admin` and to get the password run the following command
 
 ```
-kubectl get secret --namespace observability grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
 - Login to Grafana and add Tempo as data source
