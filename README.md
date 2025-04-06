@@ -527,6 +527,14 @@ annotations:
   value: "otel-collector-collector.observability.svc.cluster.local:4317"
 ```
 
+### Step 8: Deploy the application
+
+- After manually modifing all the manifests, apply them and deploy the application:
+
+```
+kubectl apply -f kubernetes-manifests/
+```
+
 ### :bulb: Interesting and new things I learned until these step.
 I got to learn about:
 - Traces
