@@ -167,15 +167,6 @@ helm install my-nginx ./
 
 ## 📝 2. choose an opensource observability stack and deploy it
 
-### :x: Getting error while connecting to the VM
-
-After completing the first task, David shared the credentials for another VM and asked to perform the first task again there. But I was not able to SSH into it. And then Walter and Anthony checked the VM to troubleshoot the issue. Then me, Walter and Anthony tried to find the issue on call.
-
-I checked the following log files `var/log/auth.log` , `var/log/syslog` with the help of `grep` and `tail` commands for the reason of error while connecting to the VM. I could see that ssh serves went down because of multiple failed attempts of authentication. Thats why I was not able to access the VM. And when you restarted the VM the server and port 22 opened again and thats when I was able to connect again.
-
-And i took whole day. In the end we found out that the policies applied by Walter took some time to be efective and then I was able to access the VM.
-
-this is my finding. please let me know if there is anything else as well.
 
 ### Step 1: Install Prometheus using Helm
 
@@ -236,6 +227,18 @@ kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-p
 - Login to Grafana and add Prometheus as data source
 
 - Then go to Dashboards and import a Kubernetes prometheus dashboard to visualize all the metrics from Prometheus into a Grafana dashboard. 
+
+### :x: Errors and Issues
+
+#### Error 1: Getting error while connecting to the VM
+
+After completing the first task, David shared the credentials for another VM and asked to perform the first task again there. But I was not able to SSH into it. And then Walter and Anthony checked the VM to troubleshoot the issue. Then me, Walter and Anthony tried to find the issue on call.
+
+I checked the following log files `var/log/auth.log` , `var/log/syslog` with the help of `grep` and `tail` commands for the reason of error while connecting to the VM. I could see that ssh serves went down because of multiple failed attempts of authentication. Thats why I was not able to access the VM. And when you restarted the VM the server and port 22 opened again and thats when I was able to connect again.
+
+And i took whole day. In the end we found out that the policies applied by Walter took some time to be efective and then I was able to access the VM.
+
+this is my finding. please let me know if there is anything else as well.
 
 ---
 
@@ -608,5 +611,5 @@ I got to learn about:
 | **Example** | API request from frontend → backend → DB | CPU usage = 80%, Request count = 100 | "Payment failed due to timeout"      |
 | **Tools** | Jaeger, Zipkin, Tempo                    | Prometheus, Grafana, CloudWatch      | Loki, ELK, Fluentd, Splunk           |
 
-
+### Errors and Issues
 
