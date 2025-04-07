@@ -659,4 +659,4 @@ kubectl logs -l app.kubernetes.io/component=opentelemetry-collector -n observabi
 ```
 ![](https://github.com/imran1509/LW-Tasks/blob/main/Screenshots/screenshot1.png)
 
-the output shows that the collector is running but 
+the output shows that the collector is running but but bot sending or receiving any traces.
