@@ -573,8 +573,39 @@ kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-passwor
 
 ### :bulb: Interesting and new things I learned until these step.
 I got to learn about:
-- Traces
-- Span
-- Difference between **Traces** , **Metrics** and **Logs**
+
+#### Traces
+
+- Traces are detailed records of the path that a request or transaction takes as it moves through a system especially in distributed or microservices architectures.
+
+- A trace typically consists of multiple spans.
+
+#### Span
+
+- A span is a single operation within the trace, like a function call, a request to a database, or an HTTP call to another service.
+
+- Together, these spans give us a timeline of events, showing what happened, where, and how long each part took.
+
+#### Traces help answer questions like:
+
+- Where is the system spending the most time?
+
+- Why is this request slower than usual?
+
+- Which service caused the error?
+
+
+#### Difference between **Traces** , **Metrics** and **Logs**
 - These 3 are known as 3 pillars of observability
+
+📊 Traces vs Metrics vs Logs
+
+| Feature   | **Traces**                              | **Metrics**                          | **Logs**                             |
+|-----------|------------------------------------------|--------------------------------------|--------------------------------------|
+| **What**  | Timeline of a request across services     | Numerical data over time             | Text-based record of events          |
+| **Focus** | Request journey (end-to-end flow)        | System health and performance trends | Detailed debug/info/error messages   |
+| **Use for** | Debugging distributed systems            | Monitoring, alerting, dashboards     | Troubleshooting, auditing            |
+| **Example** | API request from frontend → backend → DB | CPU usage = 80%, Request count = 100 | "Payment failed due to timeout"      |
+| **Tools** | Jaeger, Zipkin, Tempo                    | Prometheus, Grafana, CloudWatch      | Loki, ELK, Fluentd, Splunk           |
+
 
