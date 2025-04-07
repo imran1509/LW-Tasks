@@ -611,5 +611,53 @@ I got to learn about:
 | **Example** | API request from frontend → backend → DB | CPU usage = 80%, Request count = 100 | "Payment failed due to timeout"      |
 | **Tools** | Jaeger, Zipkin, Tempo                    | Prometheus, Grafana, CloudWatch      | Loki, ELK, Fluentd, Splunk           |
 
-### Errors and Issues
+### :x: Errors and Issues
+
+#### Error 1: Otel-collector pod not running.
+
+After installing Open telemetry collector. When I checked the pods, teh collector pod was not running. It was in CrashBackLoopOff state.
+
+**Steps to find the issue/Cause found** : Then I checked the logs to find the issue. And the cause I found was that in `exporter` section in the the confguration file I had used `logging` as one of the exporter which was deprected.
+
+**Solution** : SO I removed the `loggin` exporter and re-apply the configuration file and deployed the pod again. And the issue was resolved.
+
+
+#### Error 2: Application pods were not runnning
+
+When I applied all the manifests files after modifying them with annotations. Then the pods were not running and were in ImagePullBackOff state.
+
+**Steps to find the issue/Cause found** : I checked the container image of each deployment by using `kubectl describe` command and I found out that the container image were different and incorrect from the ones mentioned in the manifests.
+
+**Solution** : I set the image for every deployment as the correct container image using `kubectl set image` comand
+
+```
+kubectl set image deployment/adservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/adservice:v0.10.2
+kubectl set image deployment/cartservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/cartservice:v0.10.2
+kubectl set image deployment/checkoutservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/checkoutservice:v0.10.2
+kubectl set image deployment/currencyservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/currencyservice:v0.10.2
+kubectl set image deployment/emailservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/emailservice:v0.10.2
+kubectl set image deployment/loadgenerator server=us-central1-docker.pkg.dev/google-samples/microservices-demo/loadgenerator:v0.10.2
+kubectl set image deployment/loadgenerator server=us-central1-docker.pkg.dev/google-samples/microservices-demo/loadgenerator:v0.10.2
+kubectl set image deployment/loadgenerator server=us-central1-docker.pkg.dev/google-samples/microservices-demo/loadgenerator:v0.10.2
+kubectl set image deployment/loadgenerator main=us-central1-docker.pkg.dev/google-samples/microservices-demo/loadgenerator:v0.10.2
+kubectl set image deployment/paymentservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/paymentservice:v0.10.2
+kubectl set image deployment/productcatalogservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice:v0.10.2
+kubectl set image deployment/recommendationservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/recommendationservice:v0.10.2
+kubectl set image deployment/shippingservice server=us-central1-docker.pkg.dev/google-samples/microservices-demo/shippingservice:v0.10.2
+```
+
+#### Error 3: Not getting any traces on Grafana dashboard
+
+After I completed the task and added Tempo as the data source in Grafana dashboard. And I went to explore section to see the traces. I am not able to see any of it.
+
+**Steps to find the issue/Cause found** : 
+- Check if OpenTelemetry Collector is running properly.
+
+```
+# Check collector pod status
+kubectl get pods -n observability -l app.kubernetes.io/component=opentelemetry-collector
+
+# View collector logs for any errors
+kubectl logs -l app.kubernetes.io/component=opentelemetry-collector -n observability
+```
 
