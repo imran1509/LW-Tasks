@@ -657,4 +657,4 @@ kubectl get pods -n observability -l app.kubernetes.io/component=opentelemetry-c
 # View collector logs for any errors
 kubectl logs -l app.kubernetes.io/component=opentelemetry-collector -n observability
 ```
-
+![](https://github.com/imran1509/LW-Tasks/blob/main/Screenshots/screenshot1.png)
