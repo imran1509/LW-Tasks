@@ -23,5 +23,15 @@ I installed Grafana Tempo with local storage as object storage and OpenTelemetry
 I faced an error after OpenTelemetry collector was deployed. otel-collector pod was in CrashBackLoopOff state and was not runnning. I checked the logs of the deployment. The Issue was in the Configuration file. One of the exporters used logging was deprecated. Thats why pod was crashing and not runnning. We have to use `debug` exporter instead of `logging` exporter in the configuration file. To resolve this, I updated the configuration to use the debug exporter instead of logging, restarted the pod, and successfully restored its functionality.
 
 
-## :date: 27 March
+## :date: 27 March - 2 April
+
+I tried to do manual instrumentation but I was having alot of issues then I chose that I will use tempo with local storage and Open telemetry with auto instrumentation and open telemetry operator.
+
+I installed and configured both  the tools and completed the task. I faced many errors as I have mentioned in the main Readme file.
+
+## :date: 3 April - 7 April
+
+After completing the task, I was not able to get the traces in my grafana dashboard. I tried multiple methods to fix the issue as mentioned in the main readme file. I found out that the collector is not sending or receiving ant traces.
+
+IN this whole task I also learned that I need to focus on my coding more. Because manual instrumentation will be much more useful in real time project to get very specific metrics and traces. So I started learning coding with Golang.
 
