@@ -167,6 +167,14 @@ helm install my-nginx ./
 
 ## 📝 2. choose an opensource observability stack and deploy it
 
+In this task I had to choose a observability stack and deploy it.
+I chose Prometheus for metrics and grfana for visualization of the metrics.
+
+### Prerequisites
+
+- Helm installed
+- Kubernetes cluster up and running
+- `kubectl` installed
 
 ### Step 1: Install Prometheus using Helm
 
