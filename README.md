@@ -660,3 +660,30 @@ kubectl logs -l app.kubernetes.io/component=opentelemetry-collector -n observabi
 ![](https://github.com/imran1509/LW-Tasks/blob/main/Screenshots/screenshot1.png)
 
 the output shows that the collector is running but but bot sending or receiving any traces.
+
+- Verify Tempo is receiving traces
+
+```
+# Check Tempo pod status
+kubectl get pods -n observability
+
+# Check Tempo logs
+kubectl logs -l app.kubernetes.io/name=tempo -n observability -c tempo
+```
+
+These logs show that Tempo is up and running, but they don't show any trace ingestion activity. The logs are only showing regular polling of the blocklist, which is normal background activity.
+Since Tempo seems to be running correctly but not receiving traces, let's focus on the connectivity between the OpenTelemetry Collector and Tempo:
+
+- Verify Auto-Instrumentation
+
+First, let's confirm the auto-instrumentation is properly applied to your application pods:
+
+```
+kubectl describe pod -n default -l app=frontend
+```
+
+Look for instrumentation containers and the annotations
+
+- checked Service Discovery Issues
+
+
