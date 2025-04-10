@@ -659,45 +659,19 @@ kubectl set image deployment/shippingservice server=us-central1-docker.pkg.dev/g
 
 #### Error 3: Not getting any traces on Grafana dashboard
 
-After I completed the task and added Tempo as the data source in Grafana dashboard. And I went to explore section to see the traces. I am not able to see any of it.
+Summary of fixes to get this workingg
 
-**Steps to find the issue/Cause found** : 
-- Check if OpenTelemetry Collector is running properly.
+1. Tempo Configuration Fixes
 
-```
-# Check collector pod status
-kubectl get pods -n observability -l app.kubernetes.io/component=opentelemetry-collector
+- Issue: Tempo was crashing (`CrashLoopBackOff`) due to being OOMKilled.
 
-# View collector logs for any errors
-kubectl logs -l app.kubernetes.io/component=opentelemetry-collector -n observability
-```
-![](https://github.com/imran1509/LW-Tasks/blob/main/Screenshots/screenshot1.png)
+- Change Made: Increased `memory` limits in the Tempo container spec (`resources.limits.memory`) to prevent out-of-memory crashes.
 
-the output shows that the collector is running but but bot sending or receiving any traces.
+2. Trace Visibility Issues
 
-- Verify Tempo is receiving traces
+- Initial Problem: Services and traces were not appearing in Grafana Tempo UI.
 
-```
-# Check Tempo pod status
-kubectl get pods -n observability
+- Debug Step: Checked for old vs. new traces — older traces were visible after changing time range, but new ones were missing.
 
-# Check Tempo logs
-kubectl logs -l app.kubernetes.io/name=tempo -n observability -c tempo
-```
-
-These logs show that Tempo is up and running, but they don't show any trace ingestion activity. The logs are only showing regular polling of the blocklist, which is normal background activity.
-Since Tempo seems to be running correctly but not receiving traces, let's focus on the connectivity between the OpenTelemetry Collector and Tempo:
-
-- Verify Auto-Instrumentation
-
-First, let's confirm the auto-instrumentation is properly applied to your application pods:
-
-```
-kubectl describe pod -n default -l app=frontend
-```
-
-Look for instrumentation containers and the annotations
-
-- checked Service Discovery Issues
-
+3. Collector-to-Tempo Exporter Issue
 
