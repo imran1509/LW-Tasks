@@ -290,7 +290,7 @@ tempo:
       memory: 128Mi
     limits:
       cpu: 1
-      memory: 1Gi
+      memory: 2Gi
 persistence:
   enabled: true
   size: 10Gi
@@ -343,10 +343,8 @@ spec:
         spike_limit_mib: 200
 
     exporters:
-      otlp:
-        endpoint: tempo:4317
-        tls:
-          insecure: true
+      otlphttp:
+        endpoint: http://tempo:4318
 
       debug:
         verbosity: detailed
@@ -356,7 +354,7 @@ spec:
         traces:
           receivers: [otlp]
           processors: [memory_limiter, batch]
-          exporters: [otlp, debug]
+          exporters: [otlphttp, debug]
 ```
 
 - Apply this configuration
@@ -481,7 +479,10 @@ metadata:
 - name: OTEL_RESOURCE_ATTRIBUTES
   value: "service.namespace=default,service.name=currencyservice"
 - name: OTEL_EXPORTER_OTLP_ENDPOINT
-  value: "otel-collector-collector.observability.svc.cluster.local:4317"
+  value: "http://otel-collector-collector.observability.svc.cluster.local:4318"
+- name: OTEL_EXPORTER_OTLP_PROTOCOL
+  value: "http/protobuf"
+
 ```
 
 - Similarly modify other Java service manifest's files.
@@ -508,7 +509,9 @@ annotations:
 - name: OTEL_RESOURCE_ATTRIBUTES
   value: "service.namespace=default,service.name=frontend"
 - name: OTEL_EXPORTER_OTLP_ENDPOINT
-  value: "otel-collector-collector.observability.svc.cluster.local:4317"
+  value: "http://otel-collector-collector.observability.svc.cluster.local:4318"
+- name: OTEL_EXPORTER_OTLP_PROTOCOL
+  value: "http/protobuf"
 ```
 
 - Similarly modify other Go service manifest's files.
@@ -535,7 +538,10 @@ annotations:
 - name: OTEL_RESOURCE_ATTRIBUTES
   value: "service.namespace=default,service.name=recommendationservice"
 - name: OTEL_EXPORTER_OTLP_ENDPOINT
-  value: "otel-collector-collector.observability.svc.cluster.local:4317"
+  value: "http://otel-collector-collector.observability.svc.cluster.local:4318"
+- name: OTEL_EXPORTER_OTLP_PROTOCOL
+  value: "http/protobuf"
+
 ```
 
 ### Step 8: Deploy the application
