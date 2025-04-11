@@ -675,3 +675,4 @@ Summary of fixes to get this workingg
 
 3. Collector-to-Tempo Exporter Issue
 
+- **Root Cause**: OpenTelemetry Collector was configured with:
