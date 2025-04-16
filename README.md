@@ -710,3 +710,10 @@ service:
 
 - Impact: This corrected the protocol mismatch and allowed new traces to flow to Tempo successfully.
 
+## 📝 4. Re-create the full installation by GitOps using ArgoCD
+
+In this task I had to re-create the full setup using GitOps with ArgoCD, as the current installation was not stored or versioned, making it non-reproducible in the event of a namespace deletion.
+
+I did this task in different repo. Find link to the repo below
+
+Link: [LW-Observability-GitOps](https://github.com/imran1509/LW-Observability-GitOps)
