@@ -676,3 +676,37 @@ Summary of fixes to get this workingg
 3. Collector-to-Tempo Exporter Issue
 
 - **Root Cause**: OpenTelemetry Collector was configured with:
+
+```
+exporters:
+  otlp:
+    endpoint: tempo:4318
+    tls:
+      insecure: true
+
+```
+But OTLP gRPC exporter was sending data to Tempo’s HTTP port (4318) instead of gRPC port (4317), causing this error:
+
+```
+connection error: desc = "error reading server preface: http2: frame too large"
+```
+
+- Fix Made: Replaced the incorrect exporter with the proper HTTP exporter:
+
+```
+exporters:
+  otlphttp:
+    endpoint: http://tempo:4318
+```
+
+and updated the service pipeline:
+
+```
+service:
+  pipelines:
+    traces:
+      exporters: [otlphttp, debug]
+```
+
+- Impact: This corrected the protocol mismatch and allowed new traces to flow to Tempo successfully.
+
