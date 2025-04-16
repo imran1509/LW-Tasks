@@ -35,3 +35,11 @@ After completing the task, I was not able to get the traces in my grafana dashbo
 
 IN this whole task I also learned that I need to focus on my coding more. Because manual instrumentation will be much more useful in real time project to get very specific metrics and traces. So I started learning coding with Golang.
 
+## :date: 8 April - 10 April
+
+I had a call with David and Callum to provide a task update and discuss the next steps. The following objective was to debug the entire application and ensure that traces were successfully collected and visualized in the Grafana dashboard. Additionally, I was instructed to re-create the full setup using GitOps with ArgoCD, as the current installation was not stored or versioned, making it non-reproducible in the event of a namespace deletion.
+
+During this period, I focused on debugging the application and was able to successfully get the traces displayed in the Grafana dashboard.
+
+## :date: 11 April - 16 April
+I created a dedicated repository for the GitOps task and began setting up the environment accordingly. I successfully deployed the complete application onto the ArgoCD server, though I encountered several errors and challenges throughout the process. Currently, both the application and the observability stack are running as expected. However, I am still working on resolving an issue where traces are not appearing in the Grafana dashboard, and I am actively investigating and addressing this.
